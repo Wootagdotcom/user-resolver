@@ -1,0 +1,26 @@
+{
+  "name": "user-resolver",
+  "version": "1.0.0",
+  "description": "Resolve user-id from video id",
+  "main": "app.js",
+  "scripts": {
+    "test": "test",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shukla2009/user-resolver.git"
+  },
+  "keywords": [],
+  "author": "Rahul Shukla shukla2009@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shukla2009/user-resolver/issues"
+  },
+  "homepage": "https://github.com/shukla2009/user-resolver#readme",
+  "dependencies": {
+    "express": "^4.15.3",
+    "lodash": "^4.17.4",
+    "winston": "^2.3.1"
+  }
+}
