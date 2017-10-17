@@ -9,6 +9,7 @@ const util = require('util');
 const https = require('https');
 
 function findInfoFromWingApi(video, cb) {
+    logger.info(`Fetching video details for ${video} from wings api `);
     let options = {
         host: 'wootag.com',
         port: 443,

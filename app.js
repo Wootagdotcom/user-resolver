@@ -3,12 +3,13 @@ const config = require('./config');
 const logger = require('./logger')(module);
 const express = require('express');
 const app = express();
+const apicache = require('apicache');
 const webService = require('./helper/web-service');
 app.get('/', function (req, res) {
     res.send('This is ua parser server');
 });
-
-app.get('/users/:video', function (req, res) {
+let cache = apicache.middleware;
+app.get('/users/:video', cache('5 minutes'), function (req, res) {
     logger.info('finding owner for video: ' + req.params.video);
     webService.findUser(req.params.video, function (err, result) {
         if (err) {
