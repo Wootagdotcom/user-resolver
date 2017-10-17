@@ -5,20 +5,26 @@ const express = require('express');
 const app = express();
 const apicache = require('apicache');
 const webService = require('./helper/web-service');
+const localCache = require('./config/video-user.json');
 app.get('/', function (req, res) {
     res.send('This is ua parser server');
 });
 let cache = apicache.middleware;
 app.get('/users/:video', cache('5 minutes'), function (req, res) {
     logger.info('finding owner for video: ' + req.params.video);
-    webService.findUser(req.params.video, function (err, result) {
-        if (err) {
-            res.status(404).send('Not Found');
-        }
-        else {
-            res.send(`${result}`);
-        }
-    });
+    if (!!localCache[req.params.video]) {
+        logger.info('found in local cache');
+        res.send(localCache[req.params.video]);
+    } else {
+        webService.findUser(req.params.video, function (err, result) {
+            if (err) {
+                res.status(404).send('Not Found');
+            }
+            else {
+                res.send(`${result}`);
+            }
+        });
+    }
 });
 
 app.get('/engagements/:videoId/:engagementId', cache('5 minutes'), function (req, res) {
