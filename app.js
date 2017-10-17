@@ -21,7 +21,7 @@ app.get('/users/:video', cache('5 minutes'), function (req, res) {
     });
 });
 
-app.get('/engagements/:videoId/:engagementId', function (req, res) {
+app.get('/engagements/:videoId/:engagementId', cache('5 minutes'), function (req, res) {
     logger.info(`finding engagement type for video: ${req.params.videoId} and engagement: ${req.params.engagementId}`);
     webService.findEngagementType(req.params.videoId, req.params.engagementId, function (err, result) {
         if (err) {
