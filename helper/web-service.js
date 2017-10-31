@@ -60,6 +60,30 @@ exports.findEngagementType = function (videoId, engagementId, cb) {
     });
 };
 
+exports.findPollQuestion = function (videoId, engagementId, cb) {
+    findInfoFromWingApi(videoId, function (err, result) {
+        if (err) {
+            cb('NotFound');
+        }
+        else {
+            let engagements = [];
+            _.forEach(result.tags, (t) => {
+                _.forEach(t.engagement, (e) => {
+                    if (e.id === engagementId) {
+                        return engagements.push(e);
+                    }
+                });
+            });
+            if (engagements.length === 0) {
+                cb('Not Found');
+            } else {
+                cb(null, engagements[0].poll_question);
+            }
+
+        }
+    });
+};
+
 exports.findUser = function (video, cb) {
     findInfoFromWingApi(video, function (error, info) {
         if (error) {
