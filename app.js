@@ -27,6 +27,18 @@ app.get('/users/:video', cache('5 minutes'), function (req, res) {
     }
 });
 
+app.get('/duration/:video', cache('5 minutes'), function (req, res) {
+    logger.info('finding total duration for video: ' + req.params.video);
+    webService.findDuration(req.params.video, function (err, result) {
+        if (err) {
+            res.status(404).send('Not Found');
+        }
+        else {
+            res.send(`${result}`);
+        }
+    });
+});
+
 app.get('/engagements/:videoId/:engagementId', cache('5 minutes'), function (req, res) {
     logger.info(`finding engagement type for video: ${req.params.videoId} and engagement: ${req.params.engagementId}`);
     webService.findEngagementType(req.params.videoId, req.params.engagementId, function (err, result) {
@@ -40,7 +52,7 @@ app.get('/engagements/:videoId/:engagementId', cache('5 minutes'), function (req
 });
 
 app.get('/pollquestion/:videoId/:engagementId', cache('5 minutes'), function (req, res) {
-    logger.info(`finding engagement type for video: ${req.params.videoId} and engagement: ${req.params.engagementId}`);
+    logger.info(`fetching poll question type for video: ${req.params.videoId} and engagement: ${req.params.engagementId}`);
     webService.findPollQuestion(req.params.videoId, req.params.engagementId, function (err, result) {
         if (err) {
             res.status(404).send('Not Found');

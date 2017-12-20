@@ -11,7 +11,7 @@ const https = require('https');
 function findInfoFromWingApi(video, cb) {
     logger.info(`Fetching video details for ${video} from wings api `);
     let options = {
-        host: 'wootag.com',
+        host: 'preprod.wootag.com',
         port: 443,
         path: `/mobile.php/wings/getJsonViz/${video}`,
         method: 'GET',
@@ -84,6 +84,30 @@ exports.findPollQuestion = function (videoId, engagementId, cb) {
     });
 };
 
+exports.findPoll = function (videoId, engagementId, cb) {
+    findInfoFromWingApi(videoId, function (err, result) {
+        if (err) {
+            cb('NotFound');
+        }
+        else {
+            let engagements = [];
+            _.forEach(result.tags, (t) => {
+                _.forEach(t.engagement, (e) => {
+                    if (e.id === engagementId) {
+                        return engagements.push(e);
+                    }
+                });
+            });
+            if (engagements.length === 0) {
+                cb('Not Found');
+            } else {
+                cb(null, engagements[0].poll_question);
+            }
+
+        }
+    });
+};
+
 exports.findUser = function (video, cb) {
     findInfoFromWingApi(video, function (error, info) {
         if (error) {
@@ -91,6 +115,17 @@ exports.findUser = function (video, cb) {
         }
         else {
             cb(null, info.user_id);
+        }
+    });
+};
+
+exports.findDuration = function (video, cb) {
+    findInfoFromWingApi(video, function (error, info) {
+        if (error) {
+            cb('NotFound');
+        }
+        else {
+            cb(null, info.duration);
         }
     });
 };
