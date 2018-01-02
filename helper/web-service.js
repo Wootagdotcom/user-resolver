@@ -11,7 +11,7 @@ const https = require('https');
 function findInfoFromWingApi(video, cb) {
     logger.info(`Fetching video details for ${video} from wings api `);
     let options = {
-        host: 'preprod.wootag.com',
+        host: 'wootag.com',
         port: 443,
         path: `/mobile.php/wings/getJsonViz/${video}`,
         method: 'GET',
