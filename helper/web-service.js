@@ -7,11 +7,12 @@ const logger = require('../logger')(module);
 const _ = require('lodash');
 const util = require('util');
 const https = require('https');
+const config = require('../config');
 
 function findInfoFromWingApi(video, cb) {
-    logger.info(`Fetching video details for ${video} from wings api `);
+    logger.info(`Fetching video details for ${video} from wings api ${config.host}`);
     let options = {
-        host: 'wootag.com',
+        host: config.host,
         port: 443,
         path: `/mobile.php/wings/getJsonViz/${video}`,
         method: 'GET',
