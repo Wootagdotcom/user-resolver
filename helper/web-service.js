@@ -122,7 +122,7 @@ exports.findUser = function (video, cb) {
 exports.findDuration = function (video, cb) {
     findInfoFromWingApi(video, function (error, info) {
         if (error) {
-            cb('NotFound');
+            cb('Not Found');
         }
         else {
             cb(null, info.duration);
