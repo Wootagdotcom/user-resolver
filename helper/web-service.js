@@ -14,7 +14,7 @@ function findInfoFromWingApi(video, cb) {
     let options = {
         host: config.host,
         port: 443,
-        path: `/mobile.php/wings/getJsonViz/${video}`,
+        path: `/api/v1/datajson/${video}`,
         method: 'GET',
     };
 
