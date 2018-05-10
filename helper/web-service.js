@@ -115,7 +115,7 @@ exports.findUser = function (video, cb) {
             cb('NotFound');
         }
         else {
-            cb(null, info.user_id);
+            cb(null, info.brand_id);
         }
     });
 };
