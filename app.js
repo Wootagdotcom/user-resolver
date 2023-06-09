@@ -10,7 +10,9 @@ app.get('/', function (req, res) {
     res.send('This is ua parser server');
 });
 let cache = apicache.middleware;
-app.get('/users/:video', cache('5 minutes'), function (req, res) {
+const onlyStatus200 = (req, res) => res.statusCode === 200;
+const cacheSuccesses = cache('5 minutes', onlyStatus200);
+app.get('/users/:video', cacheSuccesses, function (req, res) {
     logger.info('finding owner for video: ' + req.params.video);
     if (!!localCache[req.params.video]) {
         logger.info('found in local cache');
@@ -27,7 +29,19 @@ app.get('/users/:video', cache('5 minutes'), function (req, res) {
     }
 });
 
-app.get('/engagements/:videoId/:engagementId', cache('5 minutes'), function (req, res) {
+app.get('/duration/:video', cacheSuccesses, function (req, res) {
+    logger.info('finding total duration for video: ' + req.params.video);
+    webService.findDuration(req.params.video, function (err, result) {
+        if (err) {
+            res.status(404).send('Not Found');
+        }
+        else {
+            res.send(`${result}`);
+        }
+    });
+});
+
+app.get('/engagements/:videoId/:engagementId', cacheSuccesses, function (req, res) {
     logger.info(`finding engagement type for video: ${req.params.videoId} and engagement: ${req.params.engagementId}`);
     webService.findEngagementType(req.params.videoId, req.params.engagementId, function (err, result) {
         if (err) {
@@ -39,8 +53,8 @@ app.get('/engagements/:videoId/:engagementId', cache('5 minutes'), function (req
     });
 });
 
-app.get('/pollquestion/:videoId/:engagementId', cache('5 minutes'), function (req, res) {
-    logger.info(`finding engagement type for video: ${req.params.videoId} and engagement: ${req.params.engagementId}`);
+app.get('/pollquestion/:videoId/:engagementId', cacheSuccesses, function (req, res) {
+    logger.info(`fetching poll question type for video: ${req.params.videoId} and engagement: ${req.params.engagementId}`);
     webService.findPollQuestion(req.params.videoId, req.params.engagementId, function (err, result) {
         if (err) {
             res.status(404).send('Not Found');

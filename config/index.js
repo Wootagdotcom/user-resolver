@@ -6,7 +6,8 @@ var all = {
     log: {
         level: process.env.LOG_LEVEL || 'info'
     },
-    port : process.env.PORT || 8080
+    port: process.env.PORT || 8080,
+    host: process.env.HOST || "wootag.com"
 };
 
 // Export the config object based on the NODE_ENV
